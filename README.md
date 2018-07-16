@@ -1,2 +1,6 @@
-# lx-note
-note
+"repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
+    }
