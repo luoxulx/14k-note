@@ -10,6 +10,7 @@ vim /etc/fstab
 add '/swapfile          swap            swap    defaults        0 0'
 chown root:root /swapfile
 chmod 0600 /swapfile
+
 #.vimrc --config
 set nu
 set shortmess=atI
@@ -21,7 +22,15 @@ set tabstop=4
 set shiftwidth=4
 set autoread
 set hlsearch
-"set background=dark
 set showmatch
 set ruler
 autocmd InsertEnter * se cul
+#"set background=dark
+
+# firewalld
+systemctl status firewalld.service
+firewall-cmd --zone=public --add-port=80/tcp --permanent
+firewall-cmd --zone=public --list-ports
+systemctl restart firewalld.service
+
+#nginx
