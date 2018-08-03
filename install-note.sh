@@ -2,7 +2,7 @@
 free -m
 swapon -s
 df -hal
-dd if=/dev/zero of=/swapfile bs=1024 count=512k
+dd if=/dev/zero of=/swapfile bs=1024 count=1024k
 mkswap /swapfile
 swapon /swapfile
 swapon -s
