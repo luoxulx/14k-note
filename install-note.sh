@@ -1,6 +1,12 @@
 #git-user
 useradd lx
 passwd lx
+#guacipan
+fdisk -l
+df -T /
+mount -t ext4 /dev/vdb1 /data
+vim /etc/fstab
+#add '/dev/vdb2 /data ext4 defaults 0 0'
 
 #swap
 free -m
@@ -88,6 +94,7 @@ yum -y install libxslt-devel
 yum -y install net-snmp-devel
 yum -y install unixODBC-devel
 yum -y install libicu-devel
+yum -y install libzip-devel
 yum -y install libc-client-devel
 yum -y install libXpm-devel
 yum -y install libvpx-devel
@@ -103,7 +110,7 @@ yum install -y gcc
 tar -zxvf php-7.3.tar.gz
 cd php-7.3
 
-./configure --prefix=/usr/local/php7.3.beta1 --with-config-file-path=/usr/local/php7.3.beta1/etc --enable-fpm --with-fpm-user=www --with-fpm-group=www --enable-inline-optimization --disable-debug --disable-rpath --enable-shared --enable-soap --with-xmlrpc --with-openssl --with-mcrypt --with-pcre-regex --with-sqlite3 --with-zlib --enable-bcmath --with-iconv --with-bz2 --enable-calendar --with-curl --with-cdb --enable-dom --enable-exif --enable-fileinfo --enable-filter --with-pcre-dir --enable-ftp --with-gd --with-openssl-dir --with-jpeg-dir --with-png-dir --with-freetype-dir --enable-gd-native-ttf --with-gettext --with-gmp --with-mhash --enable-json --enable-mbstring --enable-mbregex --enable-mbregex-backtrack --with-libmbfl --with-onig --enable-pdo --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-zlib-dir --with-pdo-sqlite --with-readline --enable-session --enable-shmop --enable-simplexml --enable-sockets --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-wddx --with-libxml-dir --with-xsl --enable-zip --enable-mysqlnd-compression-support --with-pear --enable-opcache
+./configure --prefix=/usr/local/php7.3.beta1 --with-config-file-path=/usr/local/php7.3.beta1/etc --enable-fpm --with-fpm-user=lx --with-fpm-group=lx --enable-inline-optimization --disable-debug --disable-rpath --enable-shared --enable-soap --with-xmlrpc --with-openssl --with-mcrypt --with-pcre-regex --with-sqlite3 --with-zlib --enable-bcmath --with-iconv --with-bz2 --enable-calendar --with-curl --with-cdb --enable-dom --enable-exif --enable-fileinfo --enable-filter --with-pcre-dir --enable-ftp --with-gd --with-openssl-dir --with-jpeg-dir --with-png-dir --with-freetype-dir --enable-gd-native-ttf --with-gettext --with-gmp --with-mhash --enable-json --enable-mbstring --enable-mbregex --enable-mbregex-backtrack --with-libmbfl --with-onig --enable-pdo --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-zlib-dir --with-pdo-sqlite --with-readline --enable-session --enable-shmop --enable-simplexml --enable-sockets --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-wddx --with-libxml-dir --with-xsl --enable-zip --enable-mysqlnd-compression-support --with-pear --enable-opcache
 
 make
 make install
@@ -161,3 +168,20 @@ location ~ \.php$ {
       include fastcgi_params;
 }
 #end
+
+#tips
+#configure: error: Please reinstall the libzip distributio 或  configure: error: system libzip must be upgraded to version >= 0.11
+#
+yum remove libzip -y
+wget https://nih.at/libzip/libzip-1.2.0.tar.gz
+tar -zxvf libzip-1.2.0.tar.gz
+cd libzip-1.2.0
+./configure
+make && make install
+#tips
+#off_t undefined; check your library configuration
+#ssh zhixing 
+echo '/usr/local/lib64
+/usr/local/lib
+/usr/lib
+/usr/lib64'>>/etc/ld.so.conf&&ldconfig -v
