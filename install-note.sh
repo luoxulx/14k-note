@@ -6,7 +6,69 @@ fdisk -l
 df -T /
 mount -t ext4 /dev/vdb1 /data
 vim /etc/fstab
-#add '/dev/vdb2 /data ext4 defaults 0 0'
+#add '/dev/vdb /20G-disk ext4 defaults 0 0'
+
+#netdata
+git clone https://github.com/firehol/netdata.git
+yum -y install zlib-devel libuuid-devel libmnl-devel gcc make git autoconf autogen automake pkgconfig
+sudo ./netdata-installer.sh
+#nginx
+upstream backend {
+    server 127.0.0.1:19999;
+    keepalive 64;
+}
+ 
+server {
+    listen 80;
+    server_name netdata.local.com;
+ 
+    location / {
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass http://backend;
+        proxy_http_version 1.1;
+        proxy_pass_request_headers on;
+        proxy_set_header Connection "keep-alive";
+        proxy_store off;
+    }
+}
+
+#redis4 
+mkdir /usr/local/redis
+tar xvfz redis-4.0.2.tar.gz
+cd /usr/local/redis/redis-4.0.2/
+yum install gcc-c++
+make
+#make MALLOC=libc
+cd src && make install
+cd utils
+./install_server.sh
+
+ps -ef | grep redis
+
+vim /etc/systemd/system/redis.service
+#add
+[Unit]
+Description=The redis-server Process Manager
+After=syslog.target network.target
+
+[Service]
+Type=simple
+PIDFile=/var/run/redis_6379.pid
+ExecStart=/usr/local/bin/redis-server /etc/redis/redis.conf         
+ExecReload=/bin/kill -USR2 $MAINPID
+ExecStop=/bin/kill -SIGINT $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+
+
+ln -s /usr/local/redis/redis-cli /usr/bin/redis
+systemctl daemon-reload
+systemctl stop redis
+systemctl enable redis
+
 
 #swap
 free -m
@@ -110,14 +172,14 @@ yum install -y gcc
 tar -zxvf php-7.3.tar.gz
 cd php-7.3
 
-./configure --prefix=/usr/local/php7.3.beta1 --with-config-file-path=/usr/local/php7.3.beta1/etc --enable-fpm --with-fpm-user=lx --with-fpm-group=lx --enable-inline-optimization --disable-debug --disable-rpath --enable-shared --enable-soap --with-xmlrpc --with-openssl --with-mcrypt --with-pcre-regex --with-sqlite3 --with-zlib --enable-bcmath --with-iconv --with-bz2 --enable-calendar --with-curl --with-cdb --enable-dom --enable-exif --enable-fileinfo --enable-filter --with-pcre-dir --enable-ftp --with-gd --with-openssl-dir --with-jpeg-dir --with-png-dir --with-freetype-dir --enable-gd-native-ttf --with-gettext --with-gmp --with-mhash --enable-json --enable-mbstring --enable-mbregex --enable-mbregex-backtrack --with-libmbfl --with-onig --enable-pdo --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-zlib-dir --with-pdo-sqlite --with-readline --enable-session --enable-shmop --enable-simplexml --enable-sockets --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-wddx --with-libxml-dir --with-xsl --enable-zip --enable-mysqlnd-compression-support --with-pear --enable-opcache
+./configure --prefix=/usr/local/php7.2.8 --with-config-file-path=/usr/local/php7.2.8/etc --enable-fpm --with-fpm-user=lx --with-fpm-group=lx --enable-inline-optimization --disable-debug --disable-rpath --enable-shared --enable-soap --with-xmlrpc --with-openssl --with-mcrypt --with-pcre-regex --with-sqlite3 --with-zlib --enable-bcmath --with-iconv --with-bz2 --enable-calendar --with-curl --with-cdb --enable-dom --enable-exif --enable-fileinfo --enable-filter --with-pcre-dir --enable-ftp --with-gd --with-openssl-dir --with-jpeg-dir --with-png-dir --with-freetype-dir --enable-gd-native-ttf --with-gettext --with-gmp --with-mhash --enable-json --enable-mbstring --enable-mbregex --enable-mbregex-backtrack --with-libmbfl --with-onig --enable-pdo --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-zlib-dir --with-pdo-sqlite --with-readline --enable-session --enable-shmop --enable-simplexml --enable-sockets --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-wddx --with-libxml-dir --with-xsl --enable-zip --enable-mysqlnd-compression-support --with-pear --enable-opcache
 
 make
 make install
 
-cp php.ini-development /usr/local/php7.3.beta1/lib/php.ini
-cp /usr/local/php7.3.beta1/etc/php-fpm.conf.default /usr/local/php7.3.beta1/etc/php-fpm.conf
-cp /usr/local/php7.3.beta1/etc/php-fpm.d/www.conf.default /usr/local/php7.3.beta1/etc/php-fpm.d/www.conf
+cp php.ini-development /usr/local/php7.2.8/lib/php.ini
+cp /usr/local/php7.2.8/etc/php-fpm.conf.default /usr/local/php7.2.8/etc/php-fpm.conf
+cp /usr/local/php7.2.8/etc/php-fpm.d/www.conf.default /usr/local/php7.2.8/etc/php-fpm.d/www.conf
 cp -R ./sapi/fpm/php-fpm /etc/init.d/php-fpm
 
 #systemctl-----php-fpm
@@ -133,7 +195,7 @@ After=network.target
 
 Type=forking
 
-ExecStart=/usr/local/php7.3.beta1/sbin/php-fpm
+ExecStart=/usr/local/php7.2.8/sbin/php-fpm
 
 ExecStop=/bin/pkill -9 php-fpm
 
