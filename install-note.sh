@@ -1,3 +1,12 @@
+#ssr
+wget --no-check-certificate -O shadowsocksR.sh https://raw.githubusercontent.com/uxh/shadowsocks_bash/master/shadowsocksR.sh && bash shadowsocksR.sh
+
+wget --no-check-certificate -O rskernel.sh https://raw.githubusercontent.com/uxh/shadowsocks_bash/master/rskernel.sh && bash rskernel.sh
+uname -r
+yum install net-tools -y && wget --no-check-certificate -O appex.sh https://raw.githubusercontent.com/0oVicero0/serverSpeeder_Install/master/appex.sh && bash appex.sh install
+
+
+
 #git-user
 useradd lx
 passwd lx
