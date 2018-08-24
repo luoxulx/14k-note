@@ -110,7 +110,8 @@ autocmd InsertEnter * se cul
 
 # firewalld
 systemctl status firewalld.service
-firewall-cmd --zone=public --add-port=80/tcp --permanent
+firewall-cmd --permanent --zone=public --add-port=80/tcp
+firewall-cmd --permanent --zone=public --add-port=80/udp
 firewall-cmd --zone=public --list-ports
 systemctl restart firewalld.service
 
