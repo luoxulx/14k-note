@@ -5,6 +5,8 @@ wget --no-check-certificate -O rskernel.sh https://raw.githubusercontent.com/uxh
 uname -r
 yum install net-tools -y && wget --no-check-certificate -O appex.sh https://raw.githubusercontent.com/0oVicero0/serverSpeeder_Install/master/appex.sh && bash appex.sh install
 
+#bbr
+wget -N --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && bash bbr.sh
 
 
 #git-user
