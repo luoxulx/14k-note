@@ -184,14 +184,14 @@ yum install -y gcc
 tar -zxvf php-7.3.tar.gz
 cd php-7.3
 
-./configure --prefix=/usr/local/php7.2.8 --with-config-file-path=/usr/local/php7.2.8/etc --enable-fpm --with-fpm-user=lx --with-fpm-group=lx --enable-inline-optimization --disable-debug --disable-rpath --enable-shared --enable-soap --with-xmlrpc --with-openssl --with-mcrypt --with-pcre-regex --with-sqlite3 --with-zlib --enable-bcmath --with-iconv --with-bz2 --enable-calendar --with-curl --with-cdb --enable-dom --enable-exif --enable-fileinfo --enable-filter --with-pcre-dir --enable-ftp --with-gd --with-openssl-dir --with-jpeg-dir --with-png-dir --with-freetype-dir --enable-gd-native-ttf --with-gettext --with-gmp --with-mhash --enable-json --enable-mbstring --enable-mbregex --enable-mbregex-backtrack --with-libmbfl --with-onig --enable-pdo --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-zlib-dir --with-pdo-sqlite --with-readline --enable-session --enable-shmop --enable-simplexml --enable-sockets --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-wddx --with-libxml-dir --with-xsl --enable-zip --enable-mysqlnd-compression-support --with-pear --enable-opcache
+./configure --prefix=/usr/local/php7.2 --with-config-file-path=/usr/local/php7.2/etc --enable-fpm --with-fpm-user=lx --with-fpm-group=lx --enable-inline-optimization --disable-debug --disable-rpath --enable-shared --enable-soap --with-xmlrpc --with-openssl --with-mcrypt --with-pcre-regex --with-sqlite3 --with-zlib --enable-bcmath --with-iconv --with-bz2 --enable-calendar --with-curl --with-cdb --enable-dom --enable-exif --enable-fileinfo --enable-filter --with-pcre-dir --enable-ftp --with-gd --with-openssl-dir --with-jpeg-dir --with-png-dir --with-freetype-dir --enable-gd-native-ttf --with-gettext --with-gmp --with-mhash --enable-json --enable-mbstring --enable-mbregex --enable-mbregex-backtrack --with-libmbfl --with-onig --enable-pdo --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-zlib-dir --with-pdo-sqlite --with-readline --enable-session --enable-shmop --enable-simplexml --enable-sockets --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-wddx --with-libxml-dir --with-xsl --enable-zip --enable-mysqlnd-compression-support --with-pear --enable-opcache
 
 make
 make install
 
-cp php.ini-development /usr/local/php7.2.8/lib/php.ini
-cp /usr/local/php7.2.8/etc/php-fpm.conf.default /usr/local/php7.2.8/etc/php-fpm.conf
-cp /usr/local/php7.2.8/etc/php-fpm.d/www.conf.default /usr/local/php7.2.8/etc/php-fpm.d/www.conf
+cp php.ini-development /usr/local/php7.2/lib/php.ini
+cp /usr/local/php7.2/etc/php-fpm.conf.default /usr/local/php7.2/etc/php-fpm.conf
+cp /usr/local/php7.2/etc/php-fpm.d/www.conf.default /usr/local/php7.2/etc/php-fpm.d/www.conf
 cp -R ./sapi/fpm/php-fpm /etc/init.d/php-fpm
 
 #systemctl-----php-fpm
@@ -207,7 +207,7 @@ After=network.target
 
 Type=forking
 
-ExecStart=/usr/local/php7.2.8/sbin/php-fpm
+ExecStart=/usr/local/php7.2/sbin/php-fpm
 
 ExecStop=/bin/pkill -9 php-fpm
 
@@ -226,7 +226,7 @@ systemctl enable php-fpm.service
 vim /etc/profile
 #add
 #lx-new -php PATH
-PATH=$PATH:/usr/local/php7.3.beta1/bin
+PATH=$PATH:/usr/local/php7.2/bin
 export PATH
 #end
 source /etc/profile
