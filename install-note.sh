@@ -114,8 +114,9 @@ autocmd InsertEnter * se cul
 systemctl status firewalld.service
 firewall-cmd --permanent --zone=public --add-port=80/tcp
 firewall-cmd --permanent --zone=public --add-port=80/udp
+firewall-cmd --permanent --zone=public --remove-port=3306/tcp
 firewall-cmd --zone=public --list-ports
-systemctl restart firewalld.service
+systemctl reload firewalld.service
 
 #MariaDB 10.1.33=>mysql5.5
 vim /etc/yum.repos.d/MariaDB.repo
