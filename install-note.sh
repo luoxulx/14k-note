@@ -8,6 +8,16 @@ yum install net-tools -y && wget --no-check-certificate -O appex.sh https://raw.
 #bbr
 wget -N --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && bash bbr.sh
 
+nginx auth
+yum  -y install httpd-tools
+
+htpasswd -c /usr/local/src/nginx/passwd username
+
+# conf li add
+#新增下面两行
+   auth_basic "Please input password"; #这里是验证时的提示信息 
+   auth_basic_user_file /usr/local/src/nginx/passwd;
+
 
 #git-user
 useradd lx
@@ -111,7 +121,7 @@ autocmd InsertEnter * se cul
 #"set background=dark
 
 # firewalld
-systemctl status firewalld.service
+systemctl stop firewalld.service
 firewall-cmd --permanent --zone=public --add-port=80/tcp
 firewall-cmd --permanent --zone=public --add-port=80/udp
 firewall-cmd --permanent --zone=public --remove-port=3306/tcp

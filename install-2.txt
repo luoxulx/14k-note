@@ -1,0 +1,17 @@
+passwd root
+useradd lx
+passwd lx
+
+yum update -y
+yum autoremove
+
+#gua zai ci pan
+fdisk -l
+df -T /
+mount -t ext4 /dev/vdb1 /data
+vim /etc/fstab
+#add '/dev/vdb /20G-disk ext4 defaults 0 0'
+
+netdata:
+yum -y install zlib-devel libuuid-devel libmnl-devel gcc make git autoconf autogen automake pkgconfig
+git clone https://github.com/firehol/netdata.git
