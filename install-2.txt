@@ -3,8 +3,11 @@ passwd root
 useradd lx
 passwd lx
 
+wget https://getcomposer.org/download/1.8.0/composer.phar
+
 yum update -y
 yum autoremove
+yum install net-tools
 
 
 #swap
@@ -106,7 +109,7 @@ htpasswd -c /usr/local/src/nginx/passwd username
 
 
 yum install redis
-
+systemctl enable redis
 
 
 
@@ -133,6 +136,7 @@ mysql -V
 mysql_secure_installation
 y
 mysql -u root -p
+
 ----------------------------------------end----------------------------------------
 
 
@@ -173,7 +177,7 @@ tar -zxvf php-7.2.13.tar.gz
 
 cd php-7.3
 
-./configure --prefix=/usr/local/php7.2.13 --with-config-file-path=/etc/php7.2.13 --enable-fpm --with-fpm-user=lx --with-fpm-group=lx --enable-inline-optimization --disable-debug --disable-rpath --enable-shared --enable-soap --with-xmlrpc --with-openssl --with-mcrypt --with-pcre-regex --with-sqlite3 --with-zlib --enable-bcmath --with-iconv --with-bz2 --enable-calendar --with-curl --with-cdb --enable-dom --enable-exif --enable-fileinfo --enable-filter --with-pcre-dir --enable-ftp --with-gd --with-openssl-dir --with-jpeg-dir --with-png-dir --with-freetype-dir --enable-gd-native-ttf --with-gettext --with-gmp --with-mhash --enable-json --enable-mbstring --enable-mbregex --enable-mbregex-backtrack --with-libmbfl --with-onig --enable-pdo --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-zlib-dir --with-pdo-sqlite --with-readline --enable-session --enable-shmop --enable-simplexml --enable-sockets --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-wddx --with-libxml-dir --with-xsl --enable-zip --enable-mysqlnd-compression-support --with-pear --enable-opcache
+./configure --prefix=/usr/local/php7.2.13 --with-config-file-path=/etc/php7.2.13 --enable-fpm --with-fpm-user=lx --with-fpm-group=lx --enable-inline-optimization --disable-debug --disable-rpath --enable-shared --enable-soap --with-xmlrpc --with-openssl --with-mcrypt --with-pcre-regex --with-sqlite3 --with-zlib --enable-bcmath --with-iconv --with-bz2 --enable-calendar --with-curl --with-cdb --enable-dom --enable-exif --enable-fileinfo --enable-filter --with-pcre-dir --enable-ftp --with-gd --with-openssl-dir --with-jpeg-dir --with-png-dir --with-freetype-dir --enable-gd-native-ttf --with-gettext --with-gmp --with-mhash --enable-json --enable-mbstring --enable-mbregex --enable-mbregex-backtrack --with-libmbfl --with-onig --enable-pdo --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-zlib-dir --with-pdo-sqlite --with-readline --enable-session --enable-shmop --enable-simplexml --enable-sockets --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-wddx --with-libxml-dir --with-xsl --enable-zip --enable-mysqlnd-compression-support --with-pear --enable-opcache --enable-swoole --enable-swoole-static
 
 make
 make install
@@ -231,3 +235,117 @@ location ~ \.php$ {
 }
 #end
 ----------------------------------------end----------------------------------------
+
+------扩展------
+yum install gcc-c++
+yum install glibc-headers
+# 初阶安装
+wget https://github.com/swoole/swoole-src/archive/v4.2.12.tar.gz
+
+cd swoole
+sudo phpize (ubuntu 没有安装phpize可执行命令：sudo apt-get install php-dev来安装phpize)
+sudo ./configure
+sudo make 
+sudo make install
+
+添加 extension=swoole.so
+# 进阶安装
+mkdir -p ~/build && \
+cd ~/build && \
+rm -rf ./swoole-src && \
+curl -o ./tmp/swoole.tar.gz https://github.com/swoole/swoole-src/archive/master.tar.gz -L && \
+tar zxvf ./tmp/swoole.tar.gz && \
+mv swoole-src* swoole-src && \
+cd swoole-src && \
+phpize && \
+./configure \
+--enable-coroutine \
+--enable-openssl  \
+--enable-http2  \
+--enable-async-redis \
+--enable-sockets \
+--enable-mysqlnd && \
+make clean && make && sudo make install
+
+添加extension=swoole.so
+
+php --ini
+php -m
+重新编译前务必要执行make clean
+----------------------------------------end----------------------------------------
+
+
+--------------php7.3-----start
+vim /etc/ld.so.conf.d/local.conf
+ 添加内容：/usr/lib
+          /usr/lib64
+然后执行 ldconfig -v
+
+yum remove libzip -y
+wget http://am1.php.net/distributions/php-7.3.1.tar.gz
+tar -zxvf php-7.3.1.tar.gz 
+yum remove libzip libzip-devel
+wget https://nih.at/libzip/libzip-1.2.0.tar.gz
+./configure
+make && make install
+
+cd php-7.3.1
+
+yum install gcc
+yum install libxml2 libxml2-devel
+yum install openssl openssl-devel
+yum install bzip2 bzip2-devel
+yum install curl curl-devel
+yum install libjpeg libjpeg-devel
+yum install libpng libpng-devel
+yum install freetype freetype-devel
+yum install gmp gmp-devel
+yum install readline-devel
+yum install libxslt libxslt-devel
+yum install libzip libzip-devel
+yum install libxslt-devel
+
+make &&make install
+
+mkdir /etc/php7.3.1 /etc/php7.3.1/php-fpm.d
+
+cp php.ini-development /etc/php7.3.1/php.ini
+cp /usr/local/php7.3.1/etc/php-fpm.conf.default /usr/local/php7.3.1/etc/php-fpm.conf
+cp /usr/local/php7.3.1/etc/php-fpm.d/www.conf.default /usr/local/php7.3.1/etc/php-fpm.d/www.conf
+cp -R ./sapi/fpm/php-fpm /etc/init.d/php-fpm
+
+# systemctl config
+# systemctl-----php-fpm
+vim /usr/lib/systemd/system/php-fpm.service
+# 添加 
+[Unit]
+
+Description=php
+
+After=network.target
+
+[Service]
+
+Type=forking
+
+ExecStart=/usr/local/php7.2.13/sbin/php-fpm
+
+ExecStop=/bin/pkill -9 php-fpm
+
+PrivateTmp=true
+
+[Install]
+
+WantedBy=multi-user.target
+# end
+systemctl restart php-fpm.service
+systemctl enable php-fpm.service
+
+# php PATH
+vim /etc/profile
+# 添加
+#lx-new -php PATH
+PATH=$PATH:/usr/local/php7.2.13/bin
+export PATH
+# end
+source /etc/profile
