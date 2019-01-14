@@ -1,3 +1,4 @@
+# 基本 start
 passwd root
 useradd lx
 passwd lx
@@ -5,13 +6,228 @@ passwd lx
 yum update -y
 yum autoremove
 
-#gua zai ci pan
+
+#swap
+free -m
+swapon -s
+df -hal
+dd if=/dev/zero of=/swapfile bs=1024 count=1024k
+mkswap /swapfile
+swapon /swapfile
+swapon -s
+vim /etc/fstab
+add '/swapfile          swap            swap    defaults        0 0'
+chown root:root /swapfile
+chmod 0600 /swapfile
+
+
+#.vimrc --config
+set nu
+set shortmess=atI
+syntax on
+set nobackup
+set confirm
+set mouse=a
+set tabstop=4
+set shiftwidth=4
+set autoread
+set hlsearch
+set showmatch
+set ruler
+autocmd InsertEnter * se cul
+#"set background=dark
+
+
+# firewalld
+systemctl stop firewalld.service
+firewall-cmd --permanent --zone=public --add-port=80/tcp
+firewall-cmd --permanent --zone=public --add-port=80/udp
+firewall-cmd --permanent --zone=public --remove-port=3306/tcp
+firewall-cmd --zone=public --list-ports
+systemctl reload firewalld.service
+
+
+
+# 挂载磁盘--start
 fdisk -l
 df -T /
 mount -t ext4 /dev/vdb1 /data
 vim /etc/fstab
-#add '/dev/vdb /20G-disk ext4 defaults 0 0'
+# 添加 '/dev/vdb /20G-disk ext4 defaults 0 0'
+----------------------------------------end----------------------------------------
 
-netdata:
-yum -y install zlib-devel libuuid-devel libmnl-devel gcc make git autoconf autogen automake pkgconfig
+# netdata:-------start
 git clone https://github.com/firehol/netdata.git
+yum -y install zlib-devel libuuid-devel libmnl-devel gcc make git autoconf autogen automake pkgconfig
+sudo ./netdata-installer.sh
+
+# netdata nginx
+upstream backend {
+    server 127.0.0.1:19999;
+    keepalive 64;
+}
+ 
+server {
+    listen 80;
+    server_name netdata.local.com;
+ 
+    location / {
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass http://backend;
+        proxy_http_version 1.1;
+        proxy_pass_request_headers on;
+        proxy_set_header Connection "keep-alive";
+        proxy_store off;
+    }
+}
+----------------------------------------end----------------------------------------
+
+# nginx
+yum install epel-release
+yum install nginx
+systemctl enable nginx
+systemctl start nginx
+firewall-cmd --zone=public --add-port=80/tcp --permanent
+firewall-cmd --reload
+systemctl status nginx
+nginx -v
+
+# nginx auth
+yum  -y install httpd-tools
+
+htpasswd -c /usr/local/src/nginx/passwd username
+
+# conf li add
+#新增下面两行
+   auth_basic "Please input password"; #这里是验证时的提示信息 
+   auth_basic_user_file /usr/local/src/nginx/passwd;
+
+
+yum install redis
+
+
+
+
+
+# mysql ----start
+#MariaDB 10.1.33=>mysql5.5
+vim /etc/yum.repos.d/MariaDB.repo
+'
+# MariaDB 10.1.33 CentOS repository list - created 2018-05-27 07:02 UTC
+# http://downloads.mariadb.org/mariadb/repositories/
+[mariadb]
+name = MariaDB
+baseurl = http://yum.mariadb.org/10.1.33/centos7-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+'
+yum install MariaDB-server MariaDB-client
+y
+y
+systemctl enable mariadb
+systemctl start mariadb
+systemctl status mariadb
+mysql -V
+mysql_secure_installation
+y
+mysql -u root -p
+----------------------------------------end----------------------------------------
+
+
+# php-----start
+# require
+yum -y install libxml2
+yum -y install libxml2-devel
+yum -y install openssl
+yum -y install openssl-devel
+yum -y install curl-devel
+yum -y install libjpeg-devel
+yum -y install libpng-devel
+yum -y install freetype-devel
+yum -y install bzip2-devel
+yum -y install libmcrypt libmcrypt-devel
+yum -y install postgresql-devel
+yum -y install aspell-devel
+yum -y install readline-devel
+yum -y install libxslt-devel
+yum -y install net-snmp-devel
+yum -y install unixODBC-devel
+yum -y install libicu-devel
+yum -y install libzip-devel
+yum -y install libc-client-devel
+yum -y install libXpm-devel
+yum -y install libvpx-devel
+yum -y install enchant-devel
+yum -y install openldap
+yum -y install openldap-devel
+yum -y install db4-devel
+yum -y install gmp-devel
+yum -y install sqlite-devel
+yum -y install mysql-devel
+yum install -y gcc
+
+
+tar -zxvf php-7.2.13.tar.gz
+
+cd php-7.3
+
+./configure --prefix=/usr/local/php7.2.13 --with-config-file-path=/etc/php7.2.13 --enable-fpm --with-fpm-user=lx --with-fpm-group=lx --enable-inline-optimization --disable-debug --disable-rpath --enable-shared --enable-soap --with-xmlrpc --with-openssl --with-mcrypt --with-pcre-regex --with-sqlite3 --with-zlib --enable-bcmath --with-iconv --with-bz2 --enable-calendar --with-curl --with-cdb --enable-dom --enable-exif --enable-fileinfo --enable-filter --with-pcre-dir --enable-ftp --with-gd --with-openssl-dir --with-jpeg-dir --with-png-dir --with-freetype-dir --enable-gd-native-ttf --with-gettext --with-gmp --with-mhash --enable-json --enable-mbstring --enable-mbregex --enable-mbregex-backtrack --with-libmbfl --with-onig --enable-pdo --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-zlib-dir --with-pdo-sqlite --with-readline --enable-session --enable-shmop --enable-simplexml --enable-sockets --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-wddx --with-libxml-dir --with-xsl --enable-zip --enable-mysqlnd-compression-support --with-pear --enable-opcache
+
+make
+make install
+# config
+cp php.ini-development /etc/php7.2.13/php.ini
+cp /usr/local/php7.2.13/etc/php-fpm.conf.default /etc/php7.2.13/php-fpm.conf
+cp /usr/local/php7.2.13/etc/php-fpm.d/www.conf.default /etc/php7.2.13/php-fpm.d/www.conf
+cp -R ./sapi/fpm/php-fpm /etc/init.d/php-fpm
+
+# systemctl config
+# systemctl-----php-fpm
+vim /usr/lib/systemd/system/php-fpm.service
+# 添加 
+[Unit]
+
+Description=php
+
+After=network.target
+
+[Service]
+
+Type=forking
+
+ExecStart=/usr/local/php7.2.13/sbin/php-fpm
+
+ExecStop=/bin/pkill -9 php-fpm
+
+PrivateTmp=true
+
+[Install]
+
+WantedBy=multi-user.target
+# end
+systemctl restart php-fpm.service
+systemctl enable php-fpm.service
+
+# php PATH
+vim /etc/profile
+# 添加
+#lx-new -php PATH
+PATH=$PATH:/usr/local/php7.2.13/bin
+export PATH
+# end
+source /etc/profile
+
+#nginx-php-dfm
+vim /etc/nginx/nginx.conf
+#add
+location ~ \.php$ {
+      root /usr/share/nginx/html; #指定php的根目录
+      fastcgi_pass 127.0.0.1:9000;#php-fpm的默认端口是9000
+      fastcgi_index index.php;
+      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+      include fastcgi_params;
+}
+#end
+----------------------------------------end----------------------------------------
