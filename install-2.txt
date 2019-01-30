@@ -12,7 +12,7 @@ yum install net-tools
 #网络流量工具
 yum install iftop
 使用：iftop -i eth0
-
+#ssr 可能已经无法使用
 
 #swap
 free -m
