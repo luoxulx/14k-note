@@ -9,6 +9,10 @@ yum update -y
 yum autoremove
 yum install net-tools
 
+#网络流量工具
+yum install iftop
+使用：iftop -i eth0
+
 
 #swap
 free -m
