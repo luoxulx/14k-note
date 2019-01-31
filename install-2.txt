@@ -353,3 +353,15 @@ PATH=$PATH:/usr/local/php7.2.13/bin
 export PATH
 # end
 source /etc/profile
+
+
+
+#brook-install-note
+wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/brook.sh && chmod +x brook.sh && bash brook.sh
+
+端口默认，密码，协议（1：新版协议）
+操作：进入包目录，运行：/brook.sh
+/etc/init.d/brook start   stop    restart    status
+目录说明：安装目录：/usr/local/brook
+		配置目录：/usr/local/brook/brook.conf
+		日志目录：/usr/local/brook/brook.log（仅会记录 error）
