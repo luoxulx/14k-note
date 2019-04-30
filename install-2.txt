@@ -1,3 +1,6 @@
+.user.ini
+open_basedir=/var/wwwroot/cloud_lnmpa_top/:/tmp/:/proc/
+
 # 基本 start
 passwd root
 useradd lx
@@ -91,7 +94,22 @@ server {
 }
 ----------------------------------------end----------------------------------------
 
-# nginx
+----------------------------------------编译安装 nginx----------------------------------------
+yum install gcc gcc-c++ automake pcre pcre-devel zlip zlib-devel openssl openssl-devel 
+
+wget http://nginx.org/download/nginx-1.8.1.tar.gz 
+
+tar  xvf nginx-1.8.1.tar.gz
+
+cd ....
+./configure  --prefix=/usr/local/nginx  --sbin-path=/usr/local/nginx/sbin/nginx --conf-path=/usr/local/nginx/conf/nginx.conf --error-log-path=/var/log/nginx/error.log  --http-log-path=/var/log/nginx/access.log  --pid-path=/var/run/nginx/nginx.pid --lock-path=/var/lock/nginx.lock  --user=lx --group=lx --with-http_ssl_module --with-http_stub_status_module --with-http_gzip_static_module --http-client-body-temp-path=/var/tmp/nginx/client/ --http-proxy-temp-path=/var/tmp/nginx/proxy/ --http-fastcgi-temp-path=/var/tmp/nginx/fcgi/ --http-uwsgi-temp-path=/var/tmp/nginx/uwsgi --http-scgi-temp-path=/var/tmp/nginx/scgi --with-pcre
+
+make
+make install
+
+----------------------------------------nginx-end----------------------------------------
+
+#  普通安装nginx
 yum install epel-release
 yum install nginx
 systemctl enable nginx
@@ -181,14 +199,14 @@ tar -zxvf php-7.2.13.tar.gz
 
 cd php-7.3
 
-./configure --prefix=/usr/local/php7.2.13 --with-config-file-path=/etc/php7.2.13 --enable-fpm --with-fpm-user=lx --with-fpm-group=lx --enable-inline-optimization --disable-debug --disable-rpath --enable-shared --enable-soap --with-xmlrpc --with-openssl --with-mcrypt --with-pcre-regex --with-sqlite3 --with-zlib --enable-bcmath --with-iconv --with-bz2 --enable-calendar --with-curl --with-cdb --enable-dom --enable-exif --enable-fileinfo --enable-filter --with-pcre-dir --enable-ftp --with-gd --with-openssl-dir --with-jpeg-dir --with-png-dir --with-freetype-dir --enable-gd-native-ttf --with-gettext --with-gmp --with-mhash --enable-json --enable-mbstring --enable-mbregex --enable-mbregex-backtrack --with-libmbfl --with-onig --enable-pdo --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-zlib-dir --with-pdo-sqlite --with-readline --enable-session --enable-shmop --enable-simplexml --enable-sockets --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-wddx --with-libxml-dir --with-xsl --enable-zip --enable-mysqlnd-compression-support --with-pear --enable-opcache --enable-swoole --enable-swoole-static
+./configure --prefix=/usr/local/php7.3 --with-config-file-path=/etc/php7.3 --enable-fpm --with-fpm-user=lx --with-fpm-group=lx --enable-inline-optimization --disable-debug --disable-rpath --enable-shared --enable-soap --with-xmlrpc --with-openssl --with-mcrypt --with-pcre-regex --with-sqlite3 --with-zlib --enable-bcmath --with-iconv --with-bz2 --enable-calendar --with-curl --with-cdb --enable-dom --enable-exif --enable-fileinfo --enable-filter --with-pcre-dir --enable-ftp --with-gd --with-openssl-dir --with-jpeg-dir --with-png-dir --with-freetype-dir --enable-gd-native-ttf --with-gettext --with-gmp --with-mhash --enable-json --enable-mbstring --enable-mbregex --enable-mbregex-backtrack --with-libmbfl --with-onig --enable-pdo --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-zlib-dir --with-pdo-sqlite --with-readline --enable-session --enable-shmop --enable-simplexml --enable-sockets --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-wddx --with-libxml-dir --with-xsl --enable-zip --enable-mysqlnd-compression-support --with-pear --enable-opcache --enable-swoole --enable-swoole-static
 
 make
 make install
 # config
-cp php.ini-development /etc/php7.2.13/php.ini
-cp /usr/local/php7.2.13/etc/php-fpm.conf.default /etc/php7.2.13/php-fpm.conf
-cp /usr/local/php7.2.13/etc/php-fpm.d/www.conf.default /etc/php7.2.13/php-fpm.d/www.conf
+cp php.ini-development /usr/local/php7.3/etc/php.ini
+cp /usr/local/php7.3/etc/php-fpm.conf.default /etc/php7.3/php-fpm.conf
+cp /usr/local/php7.3/etc/php-fpm.d/www.conf.default /etc/php7.3/php-fpm.d/www.conf
 cp -R ./sapi/fpm/php-fpm /etc/init.d/php-fpm
 
 # systemctl config
