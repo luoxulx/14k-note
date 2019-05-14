@@ -56,7 +56,7 @@ firewall-cmd --permanent --zone=public --remove-port=3306/tcp
 firewall-cmd --zone=public --list-ports
 systemctl reload firewalld.service
 
-
+http://tengine.taobao.org/download/tengine-2.3.0.tar.gz
 
 # 挂载磁盘--start
 fdisk -l
