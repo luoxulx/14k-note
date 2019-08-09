@@ -144,7 +144,7 @@ vim /etc/yum.repos.d/MariaDB.repo
 # http://downloads.mariadb.org/mariadb/repositories/
 [mariadb]
 name = MariaDB
-baseurl = http://yum.mariadb.org/10.1.33/centos7-amd64
+baseurl = http://yum.mariadb.org/10.4/centos7-amd64/
 gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
 gpgcheck=1
 '
@@ -199,7 +199,7 @@ tar -zxvf php-7.2.13.tar.gz
 
 cd php-7.3
 
-./configure --prefix=/usr/local/php7.3 --with-config-file-path=/etc/php7.3 --enable-fpm --with-fpm-user=lx --with-fpm-group=lx --enable-inline-optimization --disable-debug --disable-rpath --enable-shared --enable-soap --with-xmlrpc --with-openssl --with-mcrypt --with-pcre-regex --with-sqlite3 --with-zlib --enable-bcmath --with-iconv --with-bz2 --enable-calendar --with-curl --with-cdb --enable-dom --enable-exif --enable-fileinfo --enable-filter --with-pcre-dir --enable-ftp --with-gd --with-openssl-dir --with-jpeg-dir --with-png-dir --with-freetype-dir --enable-gd-native-ttf --with-gettext --with-gmp --with-mhash --enable-json --enable-mbstring --enable-mbregex --enable-mbregex-backtrack --with-libmbfl --with-onig --enable-pdo --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-zlib-dir --with-pdo-sqlite --with-readline --enable-session --enable-shmop --enable-simplexml --enable-sockets --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-wddx --with-libxml-dir --with-xsl --enable-zip --enable-mysqlnd-compression-support --with-pear --enable-opcache --enable-swoole --enable-swoole-static
+./configure --prefix=/usr/local/php7.3 --with-config-file-path=/usr/local/php7.3/etc --enable-fpm --with-fpm-user=lx --with-fpm-group=lx --enable-inline-optimization --disable-debug --disable-rpath --enable-shared --enable-soap --with-xmlrpc --with-openssl --with-mcrypt --with-pcre-regex --with-sqlite3 --with-zlib --enable-bcmath --with-iconv --with-bz2 --enable-calendar --with-curl --with-cdb --enable-dom --enable-exif --enable-fileinfo --enable-filter --with-pcre-dir --enable-ftp --with-gd --with-openssl-dir --with-jpeg-dir --with-png-dir --with-freetype-dir --enable-gd-native-ttf --with-gettext --with-gmp --with-mhash --enable-json --enable-mbstring --enable-mbregex --enable-mbregex-backtrack --with-libmbfl --with-onig --enable-pdo --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-zlib-dir --with-pdo-sqlite --with-readline --enable-session --enable-shmop --enable-simplexml --enable-sockets --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-wddx --with-libxml-dir --with-xsl --enable-zip --enable-mysqlnd-compression-support --with-pear --enable-opcache --enable-swoole --enable-swoole-static
 
 make
 make install
@@ -383,3 +383,38 @@ wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBack
 目录说明：安装目录：/usr/local/brook
 		配置目录：/usr/local/brook/brook.conf
 		日志目录：/usr/local/brook/brook.log（仅会记录 error）
+
+
+
+
+
+
+
+
+
+
+
+
+
+19-08-08-记录
+
+wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/ss-go.sh && chmod +x ss-go.sh
+
+systemctl restart sshd
+systemctl status firewalld
+systemctl stop firewalld
+wget https://d.kxxzz.com/sh/tcp.sh && chmod +x tcp.sh
+
+
+#lx-new
+RSAAuthentication yes
+PubkeyAuthentication yes
+PermitRootLogin no
+
+
+ssh-keygen -t rsa -b 4096 -C "luoxulx@live.com"
+eval "$(ssh-agent -s)"
+ssh-add -K ~/.ssh/id_rsa
+vim .ssh/authorized_keys
+chmod 600 authorized_keys
+chmod 700 ~/.ssh
