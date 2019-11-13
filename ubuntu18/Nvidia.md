@@ -19,3 +19,10 @@
 `nvidia-settings`
 打开Nvidia X Server Settings，选择PRIME Profile，在此可以自由切换集显和独显。如果没有PRIME Profiles，先reboot。
 [资料](https://www.jianshu.com/p/85cbb0258d32)
+
+
+查询命令
+
+`lspci | grep -i vga`
+
+`lspci | grep -i 3d`
