@@ -111,3 +111,68 @@ RENAME TABLE members TO members_bak,members_tmp TO members;
 
 就是这样，基本可以做到无损失，无需停机更新表结构，但实际上RENAME期间表是被锁死的，所以选择在线少的时候操作是一个技巧。经过这个操作，使得原先8G多的表，一下子变成了2G多
 
+
+
+
+## mysql 备份&恢复
+1.备份全部数据库的数据和结构
+
+mysqldump -uroot -p123456 -A >F:\all.sql
+
+2.备份全部数据库的结构（加 -d 参数）
+
+mysqldump -uroot -p123456 -A-d>F:\all_struct.sql
+
+3.备份全部数据库的数据(加 -t 参数)
+
+mysqldump -uroot -p123456 -A-t>F:\all_data.sql
+
+4.备份单个数据库的数据和结构(,数据库名mydb)
+
+mysqldump -uroot-p123456 mydb>F:\mydb.sql
+
+5.备份单个数据库的结构
+
+mysqldump -uroot -p123456 mydb-d>F:\mydb.sql
+
+6.备份单个数据库的数据
+
+mysqldump -uroot -p123456 mydb-t>F:\mydb.sql
+
+7.备份多个表的数据和结构（数据，结构的单独备份方法与上同）
+
+mysqldump -uroot -p123456 mydb t1 t2>f:\multables.sql
+
+8.一次备份多个数据库
+
+mysqldump -uroot -p123456 --databases db1 db2>f:\muldbs.sql
+
+还原部分分（1）mysql命令行source方法 和 （2）系统命令行方法
+
+1.还原全部数据库:
+
+(1) mysql命令行：mysql>source f:\all.sql
+
+(2) 系统命令行： mysql -uroot -p123456 <f:\all.sql
+
+2.还原单个数据库(需指定数据库)
+
+(1) mysql>use mydb
+
+mysql>source f:\mydb.sql
+
+(2) mysql -uroot -p123456 mydb <f:\mydb.sql
+
+3.还原单个数据库的多个表(需指定数据库)
+
+(1) mysql>use mydb
+
+mysql>source f:\multables.sql
+
+(2) mysql -uroot -p123456 mydb<f:\multables.sql
+
+4.还原多个数据库，（一个备份文件里有多个数据库的备份，此时不需要指定数据库）
+
+(1) mysql命令行：mysql>source f:\muldbs.sql
+
+(2) 系统命令行： mysql -uroot -p123456<f:\muldbs.sql
