@@ -1,3 +1,4 @@
+配置
 .user.ini
 open_basedir=/var/wwwroot/cloud_lnmpa_top/:/tmp/:/proc/
 
