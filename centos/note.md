@@ -1,6 +1,6 @@
 # Note
 #### 限制 PHP 的目录
-项目目录新建 .user.ini
+项目目录新建 .user.ini文件
 添加内容
 ```ini
 open_basedir=/var/wwwroot/cloud_lnmpa_top/:/tmp/:/proc/
