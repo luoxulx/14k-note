@@ -1,3 +1,4 @@
+ces hi
 # Note
 #### 限制 PHP 的目录
 项目目录新建 .user.ini文件
