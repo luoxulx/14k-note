@@ -1,4 +1,4 @@
-项目根目录配置
+项目根目录配置ceshineirong
 .user.ini
 open_basedir=/var/wwwroot/cloud_lnmpa_top/:/tmp/:/proc/
 
