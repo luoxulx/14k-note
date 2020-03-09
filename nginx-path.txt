@@ -12,7 +12,7 @@
   nginx http uwsgi temporary files: "uwsgi_temp"
   nginx http scgi temporary files: "scgi_temp"
 
-
-
+ukgiu
+ughhfjugjhgbjk
 查看所有已启动的服务
   systemctl list-units --type=service
