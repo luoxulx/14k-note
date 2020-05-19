@@ -1,7 +1,7 @@
 wqeeqweggerer ererwer大是的撒大所达
 yutyfyfutfyfufyufyufreqrwqdadwqewrewrewrew
 # Ubuntu18  Note
-
+wqeqweqwewqeqweq
 ##### 卸载旧版本
 `sudo apt-get remove docker docker-engine docker.io containerd runc`
 ## Docker
