@@ -1,6 +1,6 @@
 gqegriqwgurigqwur
-rewrewrwerwerwe
-
+rewrewrwerwerwerwer
+rqrqrqwrqwrqwrqwrqw
 ## Ubuntu 切换独显|集显
 
 检查现有显卡
