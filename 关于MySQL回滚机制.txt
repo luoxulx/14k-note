@@ -1,4 +1,4 @@
-ftfyuguihiughiuguiffhfjyf.guhinlkhihyfy
+ftfyuguihiughiuguiffhfjyf.guhinlkhihyfyd'sa'd'sa'da's 打算打算
 在事务中，每个正确的原子操作都会被顺序执行，直到遇到错误的原子操作，此时事务会将之前的操作进行回滚。回滚的意思是如果之前是插入操作，那么会执行删 除插入的记录，如果之前是update操作，也会执行update操作将之前的记录还原
 
 因此，正确的原子操作是真正被执行过的。是物理执行。
