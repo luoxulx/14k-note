@@ -11,6 +11,7 @@ echo "deb [arch=amd64] https://raw.fastgit.org/Qv2ray/debian/master/ stable main
 sudo apt-get update
 
 sudo apt-get install qv2ray
+
 ---
 89  sudo apt-get install qv2ray
    90  sudo apt-get install gnupg ca-certificates curl
