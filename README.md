@@ -2,7 +2,7 @@ oihoin433rwadasdewqeweqwewqqwrqwrwqqw5eewqeqwewqwwqddwdqwfffsfsafsd
 hfdrrgrd46ryd6rdsadasdasdasdadsatftftfuyytytffgffsdfejhhjghgdsadasdadasdascngnfjgkfhddsadasdasdas
 tydydrwrerewrwerwwrrwerwerwerwerewqeqrwqrqwrrewrwerwerhkkh
 radadwfawdwqwwqrqwrwqrqwfasfsafasfs
-
+eqwewqeqw
 wdwad
 sudo apt-get install gnupg ca-certificates curl
 
