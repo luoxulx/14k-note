@@ -2,7 +2,7 @@ oihoin433rwadasdewqeweqwewqqwrqwrwqqw5eewqeqwewqwwqddwdqwfffsfsafsdfsdfdssdfdsfd
 hfdrrgrd46ryd6rdsadasdasdasdadsatftftfuyytytffgffsdfejhhjghgdsadasdadasdascngnfjgkfhddsadasdasdasdsadsadasdsadasgrgrgrrgdgs
 tydydrwrerewrwerwwrrwerwerwerwerewqeqrwqrqwrrewrwerwerhkkhddddsadsadsadadwaadasdsadsadasdasdasdsadaswdawddsadasdaswrwqrwqrqwdsadsadsad
 eqwewqeqw
-wdwad
+wdwaddsadasdaadg
 sudo apt-get install gnupg ca-certificates curl
 
 curl -sSL https://raw.fastgit.org/Qv2ray/debian/master/pubkey.gpg | sudo apt-key add -
